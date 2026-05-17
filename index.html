@@ -204,8 +204,8 @@ header p { margin-top: 5px; font-size: 0.9rem; color: #6b7280; font-weight: 700;
 <div class="mode-bar">
   <button class="mode-tab active" onclick="setMode(0)"><span class="tab-icon">🏆</span>분반 주암송</button>
   <button class="mode-tab"        onclick="setMode(1)"><span class="tab-icon">🥇</span>분반 월암송</button>
-  <button class="mode-tab"        onclick="setMode(2)"><span class="tab-icon">🌟</span>개인전 1단계</button>
-  <button class="mode-tab"        onclick="setMode(3)"><span class="tab-icon">👑</span>개인전 2단계</button>
+  <button class="mode-tab"        onclick="setMode(2)"><span class="tab-icon">🌟</span>개인 1단계</button>
+  <button class="mode-tab"        onclick="setMode(3)"><span class="tab-icon">👑</span>개인 2단계</button>
 </div>
 
 <!-- 목록 모달 -->
@@ -337,7 +337,14 @@ function spinVerse() {
   const cfg      = modeConfig[currentMode];
   const verses   = cfg.verses;
   const slotEl   = document.getElementById('slotText');
-  const targetIdx = Math.floor(Math.random() * verses.length);
+
+  // 직전에 나온 구절만 제외하고 랜덤 선택
+  let targetIdx;
+  do {
+    targetIdx = Math.floor(Math.random() * verses.length);
+  } while (targetIdx === currentIndex && verses.length > 1);
+
+
   const totalFrames = 28;
   let frame = 0;
 
@@ -370,7 +377,7 @@ function showVerse() {
   if (cfg.showHint) {
     hintWrap.innerHTML = `<div class="verse-hint-word">${v.hint}</div>`;
   } else {
-    hintWrap.innerHTML = `<div class="verse-only-ref">📖 </div>`;
+    hintWrap.innerHTML = `<div class="verse-only-ref">📖 장절을 확인하세요</div>`;
   }
 
   document.getElementById('verseContent').style.display = 'block';
